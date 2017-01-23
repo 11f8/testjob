@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: ./Sample.xcodeproj
+xcode_scheme: Sample
+osx_image: xcode8.2.1
