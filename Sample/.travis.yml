@@ -9,9 +9,6 @@ before_install:
 - brew cask uninstall --force oclint
 - brew tap oclint/formulae
 - brew install oclint
-before_script:
-- openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in fastlane/Certificates/distribution.p12.enc
-  -d -a -out fastlane/Certificates/distribution.p12
 script:
 - lizard -C 5 -w -i 0 cicd
 - bash ./fastlane/travis.sh
