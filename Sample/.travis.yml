@@ -1,3 +1,24 @@
 language: objective-c
-xcode_project: ./Sample.xcodeproj
-xcode_scheme: Sample
+before_install:
+- export LANG=en_US.UTF-8
+- echo "Install lizard for cyclomatic complexity analysis"
+- pip install --no-use-wheel lizard
+- echo "Update fastlane"
+- gem update fastlane
+- echo "Install oclint for code quality analysis"
+- brew cask uninstall --force oclint
+- brew tap oclint/formulae
+- brew install oclint
+before_script:
+- openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in fastlane/Certificates/distribution.p12.enc
+  -d -a -out fastlane/Certificates/distribution.p12
+script:
+- lizard -C 5 -w -i 0 cicd
+- bash ./fastlane/travis.sh
+- xcodebuild | tee xcodebuild.log
+- oclint-xcodebuild
+- oclint-json-compilation-database
+after_success:
+- true
+after_script:
+- true
